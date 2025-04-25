@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 rounded-2xl shadow-lg text-center max-w-md w-full">
+    <h1 class="text-2xl font-bold text-blue-600 mb-4">Login</h1>
+    <input type="email" id="email" placeholder="Email" class="w-full mb-2 p-2 border rounded"/>
+    <input type="password" id="password" placeholder="Password" class="w-full mb-4 p-2 border rounded"/>
+    <button onclick="loginWithEmailOrPassword()" class="w-full bg-blue-500 text-white py-2 rounded mb-2 hover:bg-blue-600">Login</button>
+    <button onclick="loginWithGoogle()" class="w-full bg-red-500 text-white py-2 rounded mb-2 hover:bg-red-600">Login with Google</button>
+    <button onclick="loginWithFacebook()" class="w-full bg-blue-800 text-white py-2 rounded hover:bg-blue-900">Login with Facebook</button>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAlS8jji4dHR-SWRS012STReNlc0L3bvtI",
+      authDomain: "portofolio-e4626.firebaseapp.com",
+      projectId: "portofolio-e4626",
+      storageBucket: "portofolio-e4626.firebasestorage.app",
+      messagingSenderId: "474677425764",
+      appId: "1:474677425764:web:937f1a099f0bb3157fd171",
+      measurementId: "G-C17TG2VT1B"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function loginWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider).catch(error => alert(error.message));
+    }
+
+    function loginWithFacebook() {
+      const provider = new firebase.auth.FacebookAuthProvider();
+      auth.signInWithPopup(provider).catch(error => alert(error.message));
+    }
+
+    function loginWithEmailOrPassword() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      if (!email || !password) return alert("Isi email dan password.");
+      auth.signInWithEmailAndPassword(email, password).catch(error => alert(error.message));
+    }
+
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        console.log("Login sukses!");
+        window.location.href = "dashboard.html";
+      }
+    });
+  </script>
+</body>
+</html>
